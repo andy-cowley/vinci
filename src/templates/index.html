@@ -50,42 +50,17 @@
               </tr>
             </thead>
             <tbody>
+              {% for note in notes %}
               <tr>
-                <td>Folder</td>
-                <th scope="row">Some Note</th>
-                <td>/somereally/long/long/perhaps/too/long/path/to/another/path/then/path/to/Note.md</td>
+                <td>{{ note[4] }}</td>
+                <th scope="row">{{ note[0] }}</th>
+                <td>{{ note[2] }}</td>
                 <td>
                   <a href="#">tag1</a>,
                   <a href="#">tag2</a>,
                 </td>
               </tr>
-              <tr>
-                <td>Folder</td>
-                <th scope="row">Some Note</th>
-                <td>/some/path/to/Note.md</td>
-                <td>
-                  <a href="#">tag1</a>,
-                  <a href="#">tag2</a>,
-                </td>
-              </tr>
-              <tr>
-                <td>Folder</td>
-                <th scope="row">Some Note</th>
-                <td>/some/path/to/Note.md</td>
-                <td>
-                  <a href="#">tag1</a>,
-                  <a href="#">tag2</a>,
-                </td>
-              </tr>
-              <tr>
-                <td>Folder</td>
-                <th scope="row">Some Note</th>
-                <td>/some/path/to/Note.md</td>
-                <td>
-                  <a href="#">tag1</a>,
-                  <a href="#">tag2</a>,
-                </td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>

@@ -1,7 +1,13 @@
 import os
 
 from classes import DBConnectionHandler
-from functions import create_markdown_list, write_default_metadata, update_database, create_tag_index
+from functions import (
+    create_markdown_list,
+    write_default_metadata,
+    update_database,
+    create_tag_index,
+    create_note_index,
+)
 from flask import Flask, flash, make_response, send_file, redirect, request, render_template, url_for
 
 
@@ -41,7 +47,10 @@ app.secret_key = "This key is required for `flash()`."
 def index():
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = sum([tag[1] for tag in tag_index])
-    return render_template("index.html", tag_index_tuple=tag_index, tag_index_tuple_sum=tag_index_tuple_sum)
+    note_index = create_note_index(db)
+    return render_template(
+        "index.html", tag_index_tuple=tag_index, tag_index_tuple_sum=tag_index_tuple_sum, notes=note_index
+    )
 
 
 app.run(debug=True, host="0.0.0.0", port=5000)

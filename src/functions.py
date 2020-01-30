@@ -26,13 +26,25 @@ def update_database(db_connection, path="."):
 
         if not note_index:
             insert_string = f"""
-            INSERT INTO notes (name,author,path)
+            INSERT INTO notes (name,author,path,parent)
             VALUES(
             '{md_file.md.metadata['title']}',
             '{md_file.md.metadata['author']}',
-            '{md_file.file_obj}')
+            '{md_file.file_obj}',
+            '{md_file.parent}')
             """
             db_connection.execute(insert_string)
+
+        else:
+            update_string = f"""
+            UPDATE notes
+            SET
+            name = '{md_file.md.metadata['title']}',
+            author = '{md_file.md.metadata['author']}',
+            parent = '{md_file.parent}'
+            WHERE path = '{md_file.file_obj}'
+            """
+            db_connection.execute(update_string)
 
         for tag in md_file.md.metadata["tags"]:
             select_tag_string = f"SELECT id FROM tags WHERE tags.tag = '{tag}'"
@@ -81,3 +93,10 @@ def create_tag_index(db_connection):
         tag_tuple = (tag[1], len(tag_refs))
         tag_index_tuple_list.append(tag_tuple)
     return sorted(tag_index_tuple_list, key=lambda tag: tag[0])
+
+
+def create_note_index(db_connection, tag=None):
+    if not tag:
+        notes = fetch_all_notes(db_connection)
+        print(notes)
+    return sorted(notes, key=lambda note: note[4])
