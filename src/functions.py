@@ -93,6 +93,7 @@ def update_database(db_connection, path=".", db_init=False):
         db_connection.execute(select_join_string)
     else:
         logging.info("Database initialisation complete")
+        update_database(db_connection)
 
 
 def fetch_all_tags(db_connection):
