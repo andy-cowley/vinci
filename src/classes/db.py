@@ -24,6 +24,10 @@ class DBConnectionHandler:
         result = self.cursor.execute(query)
         return result
 
+    def executescript(self, query):
+        result = self.cursor.executescript(query)
+        return result
+
     def commit(self):
         self.con.commit()
 

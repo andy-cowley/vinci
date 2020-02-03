@@ -1,2 +1,4 @@
 *.db
 Notes
+__pycache__
+*.pyc

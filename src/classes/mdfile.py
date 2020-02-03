@@ -24,7 +24,7 @@ class MDFile:
             self.edited = 1
 
         if not self.schema.is_valid(self.md.metadata):
-            print(f"Invalid metadata in {self.file_obj}")
+            logging.warning(f"Invalid metadata in {self.file_obj}")
             try:
                 self.schema.validate(self.md.metadata)
             except SchemaError as e:
