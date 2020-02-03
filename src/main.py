@@ -19,14 +19,14 @@ if not DB_FILE:
 db = DBConnectionHandler(DB_FILE)
 db.commit()
 
+write_default_metadata()
+
 schema_file = open("sqlite_debug.db.sql", "r")
 f = schema_file.read()
 
 db.executescript(f)
 
 update_database(db, db_init=True)
-
-write_default_metadata()
 
 db.commit()
 

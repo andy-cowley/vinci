@@ -1,0 +1,31 @@
+[Unit]
+Description=Vinci Notes docker service
+After=docker.service
+Requires=docker.service
+StartLimitInterval=20
+StartLimitBurst=5
+
+[Service]
+TimeoutStartSec=120
+TimeoutStopSec=15
+
+KillMode=none
+
+# Restart policy
+Restart=on-failure
+RestartSec=20s
+
+ExecStartPre=-/usr/bin/docker stop vinci
+ExecStartPre=-/usr/bin/docker rm vinci
+ExecStartPre=-/usr/bin/docker pull andycowley/vinci:latest
+
+ExecStart=/usr/bin/docker run \
+  --name vinci \
+  -v /home/ac/Documents/Notes:/app/notes \
+  -p 5000:5000 \
+  andycowley/vinci:latest
+
+ExecStop=/usr/bin/docker stop vinci
+
+[Install]
+WantedBy=multi-user.target
