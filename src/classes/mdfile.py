@@ -1,6 +1,8 @@
 import frontmatter
 import logging
+import os
 
+from datetime import datetime
 from io import BytesIO
 from schema import Schema, SchemaError
 
@@ -29,6 +31,15 @@ class MDFile:
                 self.schema.validate(self.md.metadata)
             except SchemaError as e:
                 logging.warning(e)
+
+        modified_date = datetime.fromtimestamp(os.stat(md_file).st_mtime)
+        if "last_updated" not in self.md.metadata:
+            self.md.metadata["last_updated"] = datetime.isoformat(modified_date)
+        elif self.md.metadata["last_updated"] == "never":
+            self.md.metadata["last_updated"] = datetime.isoformat(modified_date)
+        last_updated_property = datetime.fromisoformat(self.md.metadata["last_updated"])
+        if last_updated_property > modified_date:
+            self.md.metadata["last_updated"] = datetime.isoformat(modified_date)
 
         self.md_file.close()
 
