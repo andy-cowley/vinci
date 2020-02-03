@@ -33,6 +33,9 @@ class MDFile:
                 logging.warning(e)
 
         modified_date = datetime.fromtimestamp(os.stat(md_file).st_mtime)
+        # Not having a 'last_updated' tag was problematic so this is a hacky way to ensure it's there
+        # and easier than parsing the schema validation error. This is mostly an issue with how I had my notes though
+        # And probably unnecessary.
         if "last_updated" not in self.md.metadata:
             self.md.metadata["last_updated"] = datetime.isoformat(modified_date)
         elif self.md.metadata["last_updated"] == "never":
@@ -50,7 +53,7 @@ class MDFile:
                 frontmatter.dump(self.md, f)
                 out_file.write(f.getvalue().decode("utf-8"))
         else:
-            logging.info("Nothing to write:", self.file_obj)
+            logging.info(f"Nothing to write: {self.file_obj}")
 
     def __repr__(self):
         return self.md_file.name

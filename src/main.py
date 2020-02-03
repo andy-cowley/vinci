@@ -1,3 +1,4 @@
+import logging
 import os
 
 from classes import DBConnectionHandler
@@ -10,6 +11,8 @@ from functions import (
 )
 from flask import Flask, render_template
 
+if os.getenv("VINCI_DEBUG"):
+    logging.basicConfig(level="INFO")
 
 DB_FILE = os.getenv("DB_FILE")
 
