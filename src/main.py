@@ -12,6 +12,7 @@ from functions import (
 )
 from flask import Flask, render_template, request
 
+
 if os.getenv("VINCI_DEBUG"):
     logging.basicConfig(level="INFO")
 
@@ -92,4 +93,4 @@ def search():
     )
 
 
-app.run(debug=True, host="0.0.0.0", port=5001)
+app.run(debug=True, host="0.0.0.0", port=5000)
