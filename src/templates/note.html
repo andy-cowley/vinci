@@ -1,77 +1,77 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<!-- Required meta tags -->
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-		<title>Vinci</title>
-	</head>
-	<body>
-		<header class="navbar navbar-dark bg-dark flex-column flex-md-row bd-navbar">
-			<a href="#" class="navbar-brand text-light"><img src="/static/davinci.png" /></a>
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a href="/update" class="btn btn-primary">Update Database</a>
-				</li>
-			</ul>
+    <title>Vinci</title>
+  </head>
+  <body>
+    <header class="navbar navbar-dark bg-dark flex-column flex-md-row bd-navbar">
+      <a href="#" class="navbar-brand text-light"><img src="/static/davinci.png" /></a>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a href="/update" class="btn btn-primary">Update Database</a>
+        </li>
+      </ul>
       <form role="search" class="bd-search d-flex align-items-center" action="/search" method="POST">
         <input name="search" type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off" data-docs-version="4.4">
       </form>
-		</header>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-2 col-md-2 bg-light bd-sidebar">
-					<h4 class="text-info">Metadata</h4>
-					<table class="table table-hover table-sm">
-						<tr>
-							<th scope="row">Author</th>
-							<td>{{ metadata.author }}</td>
-						</tr>
-						<tr>
-							<th scope="row">Last Updated</th>
-							<td>{{ metadata.last_updated }}</td>
-						</tr>
-						<tr>
-							<th scope="row">Tags</th>
-							<td>
-								{% for tag in metadata.tags %}
-									<a href="/tag/{{ tag }}">{{ tag }}</a>,
-								{% endfor %}
-							</td>
-						</tr>
-					</table>
-					<hr />
-					<h4 class="text-info">Tags</h4>
-					<dl class="row text-secondary">
-						<dt class="col-sm-9"><a href="/">* All notes</a></dt>
-						<dd class="col-sm-3 text-primary"><a href="/">{{ tag_index_tuple_sum }}</a></dd>
-						{% for tag in tag_index_tuple %}
-							<dt class="col-sm-9"><a href="/tag/{{ tag[0] }}">{{ tag[0] }}</a></dt>
-							<dd class="col-sm-3 text-primary"><a href="/tag/{{ tag[0] }}">{{ tag[1] }}</a></dd>
-						{% endfor %}
-					</dl>
-				</div>
+    </header>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-2 col-md-2 bg-light bd-sidebar">
+          <h4 class="text-info">Metadata</h4>
+          <table class="table table-hover table-sm">
+            <tr>
+              <th scope="row">Author</th>
+              <td>{{ metadata.author }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Last Updated</th>
+              <td>{{ metadata.last_updated }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Tags</th>
+              <td>
+                {% for tag in metadata.tags %}
+                  <a href="/tag/{{ tag }}">{{ tag }}</a>,
+                {% endfor %}
+              </td>
+            </tr>
+          </table>
+          <hr />
+          <h4 class="text-info">Tags</h4>
+          <dl class="row text-secondary">
+            <dt class="col-sm-9"><a href="/">* All notes</a></dt>
+            <dd class="col-sm-3 text-primary"><a href="/">{{ tag_index_tuple_sum }}</a></dd>
+            {% for tag in tag_index_tuple %}
+              <dt class="col-sm-9"><a href="/tag/{{ tag[0] }}">{{ tag[0] }}</a></dt>
+              <dd class="col-sm-3 text-primary"><a href="/tag/{{ tag[0] }}">{{ tag[1] }}</a></dd>
+            {% endfor %}
+          </dl>
+        </div>
 
-				<div class="col-10 col-md-10">
-					<h2 class="text-info">{{ metadata.title }}</h2>
-					<hr />
-					<div class="container" id="content">
-						{{ note_content | safe }}
-					</div>
-				</div>
+        <div class="col-10 col-md-10">
+          <h2 class="text-info">{{ metadata.title }}</h2>
+          <hr />
+          <div class="container" id="content">
+            {{ note_content | safe }}
+          </div>
+        </div>
 
-			</div>
+      </div>
 
-		</div>
+    </div>
 
-		<!-- Optional JavaScript -->
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	</body>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
 </html>

@@ -20,6 +20,7 @@ ExecStartPre=-/usr/bin/docker rm vinci
 ExecStartPre=-/usr/bin/docker pull andycowley/vinci:latest
 
 ExecStart=/usr/bin/docker run \
+  --rm \
   --name vinci \
   -v /home/ac/Documents/Notes:/app/notes \
   -p 5000:5000 \

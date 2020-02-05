@@ -24,6 +24,11 @@ RUN apk update && apk add tar\
     gmp\
     curl
 
+# install Ripgrep
+
+RUN curl -Lsf https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep-11.0.2-x86_64-unknown-linux-musl.tar.gz \
+    | tar xvz --strip-components=1 ripgrep-11.0.2-x86_64-unknown-linux-musl/rg && mv rg /usr/local/bin 
+
 # install pandoc
 RUN curl -Lsf https://github.com/jgm/pandoc/releases/download/2.9.1.1/pandoc-2.9.1.1-linux-amd64.tar.gz \
     | tar xvz --strip-components 2 -C /usr/local/bin
