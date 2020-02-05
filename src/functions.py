@@ -2,6 +2,7 @@ import logging
 import pypandoc
 from classes import MDFile
 from pathlib import Path, PurePath
+from ripgrepy import Ripgrepy
 
 
 def create_markdown_list(path_string):
@@ -123,6 +124,34 @@ def fetch_all_notes(db_connection):
     return notes_tuples
 
 
+def fetch_one_note(db_connection, note_path=None, note_id=None):
+    print(note_path)
+    if note_path and note_id:
+        raise ValueError(
+            f"""fetch_one_note() cannot handle id and path at the same time:
+            note_path = {note_path}, note_tag = {note_id}"""
+        )
+    elif note_path:
+        select_note_string = f"SELECT * FROM notes WHERE notes.path = '{note_path}'"
+    elif note_id:
+        select_note_string = f"SELECT * FROM notes WHERE notes.id = '{note_id}'"
+    else:
+        raise ValueError(f"""Exactly one of note_path or note_id must be passed to this function.""")
+    db_connection.execute(select_note_string)
+    note = db_connection.cursor.fetchone()
+    join_string = f"""
+    SELECT tags.tag
+    FROM notes_tags
+    JOIN tags ON tags.id = notes_tags.tag
+    WHERE notes_tags.note = "{note[3]}"
+    """
+    db_connection.execute(join_string)
+    tag_list = list(db_connection.cursor.fetchall())
+    print("debug", note, tag_list)
+    note_tuple = note + (tag_list,)
+    return note_tuple
+
+
 def fetch_tagged_notes(db_connection, tag_id):
     select_string = f"SELECT note FROM notes_tags WHERE tag = '{tag_id}'"
     db_connection.execute(select_string)
@@ -189,3 +218,21 @@ def render_markdown(db_connection, note_id):
     content = pypandoc.convert_text(note.md.content, to="html5", format="md")
     output = {"metadata": note.md.metadata, "content": content}
     return output
+
+
+def text_search(regex, path="."):
+    rg = Ripgrepy(regex, path)
+    files_and_lines = rg.with_filename().line_number().run().as_string.split("\n")
+    result = [tuple(item.split(":")) for item in files_and_lines if item.split(":")[0][-3:] == '.md']
+    return result
+
+
+def fetch_search_results(db_connection, regex, path="./**/*"):
+    notes = []
+    search_results = text_search(regex, path)
+    print(search_results)
+    for sr in search_results:
+        note_tuple = fetch_one_note(db_connection, note_path=sr[0][2:])
+        note = note_tuple + (sr[1],) + (sr[2],)
+        notes.append(note)
+    return notes

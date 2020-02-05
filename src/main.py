@@ -1,3 +1,4 @@
+import logging
 import os
 
 from classes import DBConnectionHandler
@@ -7,9 +8,13 @@ from functions import (
     create_tag_index,
     create_note_index,
     render_markdown,
+    fetch_search_results,
 )
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
+
+if os.getenv("VINCI_DEBUG"):
+    logging.basicConfig(level="INFO")
 
 DB_FILE = os.getenv("DB_FILE")
 
@@ -70,6 +75,21 @@ def render_note(note_id):
         tag_index_tuple_sum=tag_index_tuple_sum,
         note_content=md_file["content"],
         metadata=md_file["metadata"],
+    )
+
+
+@app.route("/search", methods=["POST"])
+def search():
+    regex = request.form["search"]
+    notes = fetch_search_results(db, regex)
+    tag_index = create_tag_index(db)
+    tag_index_tuple_sum = sum([tag[1] for tag in tag_index])
+    return render_template(
+        "results.html",
+        tag_index_tuple=tag_index,
+        tag_index_tuple_sum=tag_index_tuple_sum,
+        search_term=regex,
+        notes=notes,
     )
 
 

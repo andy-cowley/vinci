@@ -12,16 +12,15 @@
 	</head>
 	<body>
 		<header class="navbar navbar-dark bg-dark flex-column flex-md-row bd-navbar">
-			<a href="#" class="navbar-brand text-light">Vinci</a>
+			<a href="#" class="navbar-brand text-light"><img src="/static/davinci.png" /></a>
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item">
 					<a href="/update" class="btn btn-primary">Update Database</a>
 				</li>
 			</ul>
-			<form role="search" class="bd-search d-flex align-items-center">
-				<input type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off" data-docs-version="4.4">
-				<button class="btn btn-link bd-search-docs-toggle d-md-none p-0 ml-3" type="button" data-toggle="collapse" data-target="#bd-docs-nav" aria-controls="bd-docs-nav" aria-expanded="false" aria-label="Toggle docs navigation"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"/></svg></button>
-			</form>
+      <form role="search" class="bd-search d-flex align-items-center" action="/search" method="POST">
+        <input name="search" type="search" class="form-control" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off" data-docs-version="4.4">
+      </form>
 		</header>
 		<div class="container-fluid">
 			<div class="row">
