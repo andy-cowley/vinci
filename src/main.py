@@ -8,8 +8,9 @@ from functions import (
     create_tag_index,
     create_note_index,
     render_markdown,
+    fetch_search_results,
 )
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 if os.getenv("VINCI_DEBUG"):
     logging.basicConfig(level="INFO")
@@ -76,4 +77,19 @@ def render_note(note_id):
     )
 
 
-app.run(debug=False, host="0.0.0.0", port=5000)
+@app.route("/search", methods=["POST"])
+def search():
+    regex = request.form["search"]
+    notes = fetch_search_results(db, regex)
+    tag_index = create_tag_index(db)
+    tag_index_tuple_sum = sum([tag[1] for tag in tag_index])
+    return render_template(
+        "results.html",
+        tag_index_tuple=tag_index,
+        tag_index_tuple_sum=tag_index_tuple_sum,
+        search_term=regex,
+        notes=notes,
+    )
+
+
+app.run(debug=True, host="0.0.0.0", port=5001)
