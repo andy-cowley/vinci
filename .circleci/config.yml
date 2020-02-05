@@ -32,9 +32,6 @@ jobs:
             docker login -u $DOCKER_USER -p $DOCKER_PWD
             docker push andycowley/$IMAGE_NAME:$TAG
   master:
-    branches:
-      only:
-      - master
     docker:
       # specify the version you desire here
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
@@ -66,4 +63,8 @@ workflows:
   workflow:
     jobs:
     - build
-    - master
+    - master:
+        filters:
+          branches:
+            only:
+              - master
