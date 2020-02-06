@@ -90,8 +90,10 @@ def update_database(db_connection, path=".", db_init=False):
     if not db_init:
         # Remove all associations for deleted notes
         note_index_list = ",".join([f"{note}" for note in note_index_list])
-        select_join_string = f"DELETE FROM notes_tags WHERE notes_tags.note NOT IN ({note_index_list})"
-        db_connection.execute(select_join_string)
+        delete_join_string = f"DELETE FROM notes_tags WHERE notes_tags.note NOT IN ({note_index_list})"
+        db_connection.execute(delete_join_string)
+        delete_note_string = f"DELETE FROM notes WHERE notes.id NOT IN ({note_index_list})"
+        db_connection.execute(delete_note_string)
     else:
         logging.info("Database initialisation complete")
         update_database(db_connection)
