@@ -26,11 +26,13 @@ jobs:
       - run:
           name: Create Docker Image
           command: |
-            export TAG=v1.1.${CIRCLE_BUILD_NUM}
+            export VERSION_TAG=v$(cat VERSION)-${CIRCLE_BUILD_NUM}
+            export DEVELOPMENT_TAG=unstable
             export IMAGE_NAME=vinci
-            docker build -t andycowley/$IMAGE_NAME:$TAG .
+            docker build --build-arg BUILD_DATE=$(date +%x) --build-arg VERSION=${VERSION_TAG} -t andycowley/$IMAGE_NAME:$VERSION_TAG -t andycowley/$IMAGE_NAME:$DEVELOPMENT_TAG .
             docker login -u $DOCKER_USER -p $DOCKER_PWD
-            docker push andycowley/$IMAGE_NAME:$TAG
+            docker push andycowley/$IMAGE_NAME:$VERSION_TAG
+            docker push andycowley/$IMAGE_NAME:$DEVELOPMENT_TAG
   master:
     docker:
       # specify the version you desire here
@@ -53,11 +55,13 @@ jobs:
       - run:
           name: Create Docker Image
           command: |
-            export TAG=latest
+            export LATEST_TAG=latest
+            export VERSION_TAG=v$(cat VERSION)
             export IMAGE_NAME=vinci
-            docker build -t andycowley/$IMAGE_NAME:$TAG .
+            docker build --build-arg BUILD_DATE=$(date +%x) --build-arg VERSION=${VERSION_TAG} -t andycowley/$IMAGE_NAME:$VERSION_TAG -t andycowley/$IMAGE_NAME:$LATEST_TAG .
             docker login -u $DOCKER_USER -p $DOCKER_PWD
-            docker push andycowley/$IMAGE_NAME:$TAG
+            docker push andycowley/$IMAGE_NAME:$VERSION_TAG
+            docker push andycowley/$IMAGE_NAME:$LATEST_TAG
 workflows:
   version: 2
   workflow:
