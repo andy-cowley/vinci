@@ -45,6 +45,8 @@ LABEL name="Vinci" \
   org.label-schema.description="A lightweight markdown indexer and viewer" \
   org.label-schema.version=$VERSION
 
+ENV VERSION=$VERSION
+
 COPY --from=build /build /usr/local
 COPY ./src /app
 

@@ -19,6 +19,7 @@ if os.getenv("VINCI_DEBUG"):
     logging.basicConfig(level="INFO")
 
 DB_FILE = os.getenv("DB_FILE")
+VERSION = os.getenv("VERSION")
 
 if not DB_FILE:
     DB_FILE = "sqlite_debug.db"
@@ -46,7 +47,11 @@ def index():
     tag_index_tuple_sum = sum([tag[1] for tag in tag_index])
     note_index = create_note_index(db)
     return render_template(
-        "index.html", tag_index_tuple=tag_index, tag_index_tuple_sum=tag_index_tuple_sum, notes=note_index
+        "index.html",
+        tag_index_tuple=tag_index,
+        tag_index_tuple_sum=tag_index_tuple_sum,
+        notes=note_index,
+        version=VERSION,
     )
 
 
@@ -56,7 +61,11 @@ def build_note_list(tag_query):
     tag_index_tuple_sum = sum([tag[1] for tag in tag_index])
     note_index = create_note_index(db, tag_query)
     return render_template(
-        "index.html", tag_index_tuple=tag_index, tag_index_tuple_sum=tag_index_tuple_sum, notes=note_index
+        "index.html",
+        tag_index_tuple=tag_index,
+        tag_index_tuple_sum=tag_index_tuple_sum,
+        notes=note_index,
+        version=VERSION,
     )
 
 
@@ -77,6 +86,7 @@ def render_note(note_id):
         tag_index_tuple_sum=tag_index_tuple_sum,
         note_content=md_file["content"],
         metadata=md_file["metadata"],
+        version=VERSION,
     )
 
 

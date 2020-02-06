@@ -13,7 +13,7 @@
   <body>
     <header class="navbar navbar-dark bg-dark flex-column flex-md-row bd-navbar">
       <a href="#" class="navbar-brand text-light"><img src="/static/davinci.png" /></a>
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav mr-auto flex-row">
         <li class="nav-item">
           <a href="/update" class="btn btn-primary">Update Database</a>
         </li>
@@ -54,6 +54,7 @@
               <dd class="col-sm-3 text-primary"><a href="/tag/{{ tag[0] }}">{{ tag[1] }}</a></dd>
             {% endfor %}
           </dl>
+          <span class="badge badge-info">{{ version }}</span>
         </div>
 
         <div class="col-10 col-md-10">
