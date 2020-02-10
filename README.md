@@ -43,21 +43,21 @@ run` though
 Without any ceremony, when Vinci first starts, it will query your notes for existing metadata. If it doesn't find any,
 it will write the default schema at the top of your files like so:
 
-        ```yaml
-        ---
-        author: No-one
-        last_updated: Never
-        tags:
-        - untagged
-        title: <filename.md>
-        ---
-        ```
+```yaml
+---
+author: No-one
+last_updated: Never
+tags:
+- untagged
+title: <filename.md>
+---
+```
 
 If it finds any existing metadata, it will try and use it, but will probably fail unless it mostly conforms to the
 schema. One day, I'll make that better.
 
-        > It is strongly advised that you back up your notes directory and try it out on there first! I accept no
-        > responsibility for screw-ups.
+> It is strongly advised that you back up your notes directory and try it out on there first! I accept no
+> responsibility for screw-ups.
 
 ### Troubleshooting Metadata
 
