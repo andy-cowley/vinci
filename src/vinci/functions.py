@@ -182,6 +182,13 @@ def fetch_tagged_notes(db_connection, tag_id):
     return notes_tuples
 
 
+def fetch_total_notes(db_connection):
+    count_string = "SELECT COUNT(*) FROM notes"
+    db_connection.execute(count_string)
+    count_total = db_connection.cursor.fetchone()[0]
+    return count_total
+
+
 def create_tag_index(db_connection):
     all_tags = fetch_all_tags(db_connection)
     tag_index_tuple_list = []
