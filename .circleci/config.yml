@@ -39,7 +39,8 @@ jobs:
           name: Unit Tests
           command: |
             cd src
-            pipenv run python -m unittest tests/test_MDFile.py > test-results
+            pipenv run python -m unittest tests/test_MDFile.py
+            pipenv run python -m unittest tests/test_web_server.py
 
       - setup_remote_docker:
           docker_layer_caching: false
