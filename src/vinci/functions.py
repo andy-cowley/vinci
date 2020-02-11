@@ -1,6 +1,6 @@
 import logging
 import pypandoc
-from classes import MDFile
+from vinci.classes import MDFile
 from pathlib import Path, PurePath
 from ripgrepy import Ripgrepy
 
