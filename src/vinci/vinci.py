@@ -9,7 +9,7 @@ from vinci.functions import (
     create_note_index,
     render_markdown,
     fetch_search_results,
-)
+    fetch_total_notes)
 from flask import Flask, render_template, request
 
 
@@ -42,7 +42,7 @@ app = Flask(__name__)
 @app.route("/", methods=["GET"])
 def index():
     tag_index = create_tag_index(db)
-    tag_index_tuple_sum = sum([tag[1] for tag in tag_index])
+    tag_index_tuple_sum = fetch_total_notes(db)
     note_index = create_note_index(db)
     return render_template(
         "index.html",
@@ -56,7 +56,7 @@ def index():
 @app.route("/tag/<string:tag_query>", methods=["GET"])
 def build_note_list(tag_query):
     tag_index = create_tag_index(db)
-    tag_index_tuple_sum = sum([tag[1] for tag in tag_index])
+    tag_index_tuple_sum = fetch_total_notes(db)
     note_index = create_note_index(db, tag_query)
     return render_template(
         "index.html",
@@ -77,7 +77,7 @@ def update_and_show_index():
 def render_note(note_id):
     md_file = render_markdown(db, note_id)
     tag_index = create_tag_index(db)
-    tag_index_tuple_sum = sum([tag[1] for tag in tag_index])
+    tag_index_tuple_sum = fetch_total_notes(db)
     return render_template(
         "note.html",
         tag_index_tuple=tag_index,
@@ -91,7 +91,7 @@ def render_note(note_id):
 @app.route("/search", methods=["GET", "POST"])
 def search():
     tag_index = create_tag_index(db)
-    tag_index_tuple_sum = sum([tag[1] for tag in tag_index])
+    tag_index_tuple_sum = fetch_total_notes(db)
     if request.method == "POST":
         regex = request.form["search"]
         notes = fetch_search_results(db, regex)
