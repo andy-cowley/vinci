@@ -21,6 +21,9 @@ jobs:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.8/site-packages
+      - run: curl -Lsf https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep-11.0.2-x86_64-unknown-linux-musl.tar.gz | tar xvz --strip-components=1 ripgrep-11.0.2-x86_64-unknown-linux-musl/rg && mv rg /usr/local/bin
+      - run: curl -Lsf https://github.com/jgm/pandoc/releases/download/2.9.1.1/pandoc-2.9.1.1-linux-amd64.tar.gz | tar xvz --strip-components 2 -C /usr/local/bin
+
       - restore_cache:  # ensure this step occurs *before* installing dependencies
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
