@@ -10,8 +10,7 @@ from vinci.functions import (
     render_markdown,
     fetch_search_results,
     fetch_total_notes)
-from flask import Flask, render_template, request
-
+from flask import Flask, render_template, request, send_from_directory
 
 if os.getenv("VINCI_DEBUG"):
     logging.basicConfig(level="INFO")
@@ -37,6 +36,12 @@ update_database(db, db_init=True)
 db.commit()
 
 app = Flask(__name__)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route("/", methods=["GET"])
