@@ -114,3 +114,14 @@ def search():
         )
 
 
+@app.route("/tasks", methods=["GET"])
+def tasks():
+    tag_index = create_tag_index(db)
+    tag_index_tuple_sum = fetch_total_notes(db)
+    notes = fetch_search_results(db, "\- \[.\]")
+    return render_template(
+        "tasks.html",
+        tag_index_tuple=tag_index,
+        tag_index_tuple_sum=tag_index_tuple_sum,
+        notes=notes,
+    )

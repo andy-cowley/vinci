@@ -242,6 +242,12 @@ def fetch_search_results(db_connection, regex, path="./**/*"):
     print(search_results)
     for sr in search_results:
         note_tuple = fetch_one_note(db_connection, note_path=sr[0][2:])
-        note = note_tuple + (sr[1],) + (sr[2],)
+        if "- [x] " in sr[2]:
+            result_as_html = f"<input type='checkbox' disabled checked> {sr[2][5:]}"
+        elif "- [ ] " in sr[2]:
+            result_as_html = f"<input type='checkbox' disabled> {sr[2][5:]}"
+        else:
+            result_as_html = sr[2]
+        note = note_tuple + (sr[1],) + (result_as_html,)
         notes.append(note)
     return notes
