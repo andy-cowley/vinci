@@ -74,6 +74,7 @@ def build_note_list(tag_query):
 
 @app.route("/update", methods=["GET"])
 def update_and_show_index():
+    write_default_metadata()
     update_database(db)
     return index()
 
