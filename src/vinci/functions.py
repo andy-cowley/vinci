@@ -68,6 +68,7 @@ def update_database(db_connection, path=".", db_init=False):
                 select_tag_string = f"SELECT id FROM tags WHERE tags.tag = '{tag}'"
                 db_connection.execute(select_tag_string)
                 tag_index = db_connection.cursor.fetchone()
+                tag_index_list.append(tag_index[0])
 
             select_join_string = f"""
             SELECT note,tag FROM notes_tags WHERE note = '{note_index}' AND tag = '{tag_index[0]}'
