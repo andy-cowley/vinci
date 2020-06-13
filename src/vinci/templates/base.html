@@ -11,7 +11,7 @@
     <title>Vinci</title>
   </head>
   <body>
-    <header class="navbar navbar-dark bg-dark flex-column flex-md-row bd-navbar">
+    <header class="navbar flex-column flex-md-row bd-navbar">
       <a href="#" class="navbar-brand text-light"><img src="/static/davinci.png" /></a>
       <ul class="navbar-nav mr-auto flex-row">
         <li class="nav-item">
@@ -28,17 +28,24 @@
     <div class="container-fluid">
       <div class="row">
         <div class="row">
-          <div class="col-2 col-md-2 bg-light bd-sidebar">
+          <div class="col-2 col-md-2 bd-sidebar">
             <h4 class="text-info">Tags</h4>
-            <dl class="row text-secondary">
-
-              <dt class="col-sm-9"><a class="badge btn-outline-info" href="/">All notes</a></dt>
-              <dd class="col-sm-3 text-primary"><a href="/">{{ tag_index_tuple_sum }}</a></dd>
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="/">All notes</a>
+                <span class="badge badge-primary badge-pill">
+                  <a href="/">{{ tag_index_tuple_sum }}</a>
+                </span>
+              </li>
               {% for tag in tag_index_tuple %}
-              <dt class="col-sm-9"><a class="badge btn-outline-primary" href="/tag/{{ tag[0] }}">{{ tag[0] }}</a></dt>
-              <dd class="col-sm-3 text-primary"><a href="/tag/{{ tag[0] }}">{{ tag[1] }}</a></dd>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="/tag/{{ tag[0] }}">{{ tag[0] }}</a>
+                <span class="badge badge-primary badge-pill">
+                  <a href="/tag/{{ tag[0] }}">{{ tag[1] }}</a>
+                </span>
+              </li>
               {% endfor %}
-            </dl>
+            </ul>
             <span class="badge badge-info">{{ version }}</span>
           </div>
         {% block content %}{% endblock %}

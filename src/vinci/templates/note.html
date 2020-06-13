@@ -10,26 +10,27 @@
               <div class="col-8 col-md-8">
                 {{ note_content | safe }}
               </div>
-              <div class="col-4 col-md-4">
-                <h4 class="text-info">Metadata</h4>
-                <table class="table table-hover table-sm">
-                  <tr>
-                    <th scope="row">Author</th>
-                    <td>{{ metadata.author }}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Last Updated</th>
-                    <td>{{ metadata.last_updated }}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Tags</th>
-                    <td>
-                      {% for tag in metadata.tags %}
-                        <a class="badge badge-primary" href="/tag/{{ tag }}">{{ tag }}</a>
-                      {% endfor %}
-                    </td>
-                  </tr>
-                </table>
+              <div class="card border-secondary">
+                <div class="card-header">
+                  Metadata
+                </div>
+                <div class="card-body ">
+                  <table class="table table-hover table-sm">
+                    <tr>
+                      <th scope="row">Author</th>
+                      <td>{{ metadata.author }}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Last Updated</th>
+                      <td>{{ metadata.last_updated }}</td>
+                    </tr>
+                  </table>
+                </div>
+                <div  class="card-footer">
+                  {% for tag in metadata.tags %}
+                    <a class="badge badge-primary" href="/tag/{{ tag }}">{{ tag }}</a>
+                  {% endfor %}
+                </div>
               </div>
             </div>
           </div>
