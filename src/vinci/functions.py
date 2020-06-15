@@ -226,6 +226,7 @@ def render_markdown(db_connection, note_id):
     note_path = Path(db_connection.cursor.fetchone()[0])
     note = MDFile(note_path)
     content = pypandoc.convert_text(note.md.content, to="html5", format="md")
+    content = content.replace("<table>", "<table class='table'>")
     output = {"metadata": note.md.metadata, "content": content}
     return output
 
