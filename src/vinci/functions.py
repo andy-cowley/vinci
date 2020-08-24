@@ -227,6 +227,7 @@ def render_markdown(db_connection, note_id):
     note = MDFile(note_path)
     content = pypandoc.convert_text(note.md.content, to="html5", format="md")
     content = content.replace("<table>", "<table class='table'>")
+    content = content.replace("<blockquote>", "<blockquote class='blockquote'>")
     output = {"metadata": note.md.metadata, "content": content}
     return output
 
