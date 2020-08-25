@@ -46,7 +46,7 @@ it will write the default schema at the top of your files like so:
 ```yaml
 ---
 author: No-one
-last_updated: Never
+modified: Never
 tags:
 - untagged
 title: <filename.md>

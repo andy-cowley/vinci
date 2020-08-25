@@ -18,6 +18,32 @@ if os.getenv("VINCI_DEBUG"):
 DB_FILE = os.getenv("DB_FILE")
 VERSION = os.getenv("VERSION")
 
+DB_SCHEMA = """
+    BEGIN TRANSACTION;
+    DROP TABLE IF EXISTS "notes";
+    CREATE TABLE IF NOT EXISTS "notes" (
+        "name"	TEXT,
+        "path"	TEXT UNIQUE,
+        "id"	INTEGER,
+        "parent"	TEXT DEFAULT '.',
+        PRIMARY KEY("id")
+    );
+    DROP TABLE IF EXISTS "notes_tags";
+    CREATE TABLE IF NOT EXISTS "notes_tags" (
+        "id"	INTEGER,
+        "note"	INTEGER,
+        "tag"	INTEGER,
+        PRIMARY KEY("id")
+    );
+    DROP TABLE IF EXISTS "tags";
+    CREATE TABLE IF NOT EXISTS "tags" (
+        "id"	INTEGER,
+        "tag"	TEXT UNIQUE,
+        PRIMARY KEY("id")
+    );
+    COMMIT;
+   """
+
 if not DB_FILE:
     DB_FILE = "sqlite_debug.db"
 
@@ -26,10 +52,10 @@ db.commit()
 
 write_default_metadata()
 
-schema_file = open("schema/vinci_schema.sql", "r")
-f = schema_file.read()
+#schema_file = open("schema/vinci_schema.sql", "r")
+#f = schema_file.read()
 
-db.executescript(f)
+db.executescript(DB_SCHEMA)
 
 update_database(db, db_init=True)
 
@@ -81,6 +107,8 @@ def update_and_show_index():
 
 @app.route("/note/<string:note_id>", methods=["GET"])
 def render_note(note_id):
+    if note_id[-3:] == '.md':
+        note_id = note_id.split('.')[0]
     md_file = render_markdown(db, note_id)
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)

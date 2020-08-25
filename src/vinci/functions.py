@@ -30,10 +30,10 @@ def update_database(db_connection, path=".", db_init=False):
 
         if not note_index:
             insert_string = f"""
-            INSERT INTO notes (name,author,path,parent)
+            INSERT INTO notes (id,name,path,parent)
             VALUES(
+            '{int(md_file.file_obj.split('.')[0])}',
             '{md_file.md.metadata['title']}',
-            '{md_file.md.metadata['author']}',
             '{md_file.file_obj}',
             '{md_file.parent}')
             """
@@ -43,7 +43,6 @@ def update_database(db_connection, path=".", db_init=False):
             UPDATE notes
             SET
             name = '{md_file.md.metadata['title']}',
-            author = '{md_file.md.metadata['author']}',
             parent = '{md_file.parent}'
             WHERE path = '{md_file.file_obj}'
             """
@@ -117,7 +116,7 @@ def fetch_all_notes(db_connection):
         SELECT tags.tag
         FROM notes_tags
         JOIN tags ON tags.id = notes_tags.tag
-        WHERE notes_tags.note = {note[3]}
+        WHERE notes_tags.note = {note[2]}
         """
         db_connection.execute(join_string)
         tag_list = list(db_connection.cursor.fetchall())
@@ -146,7 +145,7 @@ def fetch_one_note(db_connection, note_path=None, note_id=None):
     SELECT tags.tag
     FROM notes_tags
     JOIN tags ON tags.id = notes_tags.tag
-    WHERE notes_tags.note = "{note[3]}"
+    WHERE notes_tags.note = "{note[2]}"
     """
     db_connection.execute(join_string)
     tag_list = list(db_connection.cursor.fetchall())
@@ -163,7 +162,7 @@ def fetch_tagged_notes(db_connection, tag_id):
     notes_tuples = []
     for note in note_id_list:
         select_string = f"""
-        SELECT name,author,path,id,parent
+        SELECT name,path,id,parent
         FROM notes
         WHERE id = '{note}'
         """
@@ -239,7 +238,7 @@ def text_search(regex, path="."):
     return result
 
 
-def fetch_search_results(db_connection, regex, path="./**/*"):
+def fetch_search_results(db_connection, regex, path="./*"):
     notes = []
     search_results = text_search(regex, path)
     print(search_results)
