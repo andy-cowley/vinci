@@ -9,7 +9,7 @@ from vinci.classes.mdfile import MDFile
 class BasicTests(unittest.TestCase):
     # executed prior to each test
     def setUp(self):
-        notes = ["Test Note 1", "Test Note 2", "Test Note 3", "Test Note 4"]
+        notes = ["202004031915", "202004032004", "202008312334", "202008312335"]
         os.mkdir("TestNotes")
         for note in notes:
             os.mkdir(f"TestNotes/{note}")
@@ -25,11 +25,11 @@ class BasicTests(unittest.TestCase):
                 f.write(test_string)
                 f.close()
         os.mkdir("TestNotes/meta")
-        with open("TestNotes/meta/note-with-metadata.md", "x") as f:
+        with open("TestNotes/meta/202005070809.md", "x") as f:
             note_with_metadata_text = """
 ---
-author: test
-last_updated: "2020-02-03T09:59:19"
+created: 2020-02-03T09:59:19
+modified: 2020-02-03T09:59:19
 tags:
 - tag1
 - tag2
@@ -47,26 +47,20 @@ Bumf
         shutil.rmtree("TestNotes")
 
     def test_note_with_no_metadata(self):
-        md_file = "TestNotes/Test Note 1/Test Note 1.md"
+        md_file = "TestNotes/202004031915/202004031915.md"
         note = MDFile(md_file)
-        modified_date = datetime.fromtimestamp(os.stat(md_file).st_mtime)
-        assert note.md.metadata["title"] == "Test Note 1.md"
-        assert note.md.metadata["author"] == "No-one"
+        assert note.md.metadata["title"] == "202004031915.md"
         assert note.md.metadata["tags"] == ["untagged"]
-        assert datetime.fromisoformat(note.md.metadata["last_updated"]) == modified_date
-        assert note.parent == "Test Note 1"
-        assert note.path == ["TestNotes", "Test Note 1", "Test Note 1.md"]
+        assert note.parent == "202004031915"
+        assert note.path == ["TestNotes", "202004031915", "202004031915.md"]
 
     def test_note_with_metadata(self):
-        md_file = "TestNotes/meta/note-with-metadata.md"
+        md_file = "TestNotes/meta/202005070809.md"
         note = MDFile(md_file)
-        modified_date = "2020-02-03T09:59:19"
         assert note.md.metadata["title"] == "Note with Metadata"
-        assert note.md.metadata["author"] == "test"
         assert note.md.metadata["tags"] == ["tag1", "tag2", "tag3"]
-        assert note.md.metadata["last_updated"] == modified_date
         assert note.parent == "meta"
-        assert note.path == ["TestNotes", "meta", "note-with-metadata.md"]
+        assert note.path == ["TestNotes", "meta", "202005070809.md"]
 
 if __name__ == "__main__":
     unittest.main()
