@@ -29,10 +29,11 @@ def update_database(db_connection, path=".", db_init=False):
         note_index = db_connection.cursor.fetchone()
 
         if not note_index:
+            note_index = int(md_file.file_obj.split('.')[0].split('/')[-1])
             insert_string = f"""
             INSERT INTO notes (id,name,path,parent)
             VALUES(
-            '{int(md_file.file_obj.split('.')[0])}',
+            '{note_index}',
             '{md_file.md.metadata['title']}',
             '{md_file.file_obj}',
             '{md_file.parent}')
