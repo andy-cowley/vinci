@@ -27,27 +27,27 @@
                         <td>{{ metadata.created }}</td>
                       </tr>
                     </table>
+                      <h5 class="text-muted">References</h5>
                       {% if metadata.book is defined %}
-                      <h5 class="text-muted">Book Details</h5>
-                    <table class="table table-hover table-sm">
-                      <tr>
-                        <th scope="row">Book Title</th>
-                        <td>{{ metadata.book.title }}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Book Author</th>
-                        <td>{{ metadata.book.author }}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Read</th>
-                        <td>{{ metadata.book.read }}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Pages</th>
-                        <td>{{ metadata.book.pages }}</td>
-                      </tr>
-                    </table>
+                      <h6 class="text-muted">Books</h6>
+                      <ul class="list-group">
+                        {% for book in metadata.book %}
+                        <li class="list-group-item">
+                          <em>{{ book.title }}</em> - {{ book.author }} - page(s) {{ book.pages }} (Read {{ book.read }})
+                        </li>
+                        {% endfor %}
+                      </ul>
                       {% endif %}
+                    {% if metadata.web is defined %}
+                    <h6 class="text-muted">Web Links</h6>
+                    <ul class="list-group">
+                      {% for link in metadata.web %}
+                      <li class="list-group-item">
+                        <a href="{{ link }}" target="_blank">{{ link }}</a>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                    {% endif %}
                     {% if metadata.backlinks is defined %}
                     <h5 class="text-muted">Backlinks</h5>
                     <div class="list-group">
