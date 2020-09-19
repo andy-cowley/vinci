@@ -1,4 +1,6 @@
 import os
+
+notes = ["Test Note 1", "Test Note 2", "Test Note 3", "Test Note 4"]
 import shutil
 import unittest
 import sys
@@ -12,7 +14,7 @@ from classes.db import DBConnectionHandler
 class BasicTests(unittest.TestCase):
     # executed prior to each test
     def setUp(self):
-        notes = ["Test Note 1", "Test Note 2", "Test Note 3", "Test Note 4"]
+        notes = ["202004031915", "202004032004", "202008312334", "202008312335"]
         os.mkdir("TestNotes")
         for note in notes:
             os.mkdir(f"TestNotes/{note}")
