@@ -1,5 +1,6 @@
 import logging
 import pypandoc
+import re
 from vinci.classes import MDFile
 from pathlib import Path, PurePath
 from ripgrepy import Ripgrepy
@@ -53,6 +54,17 @@ def update_database(db_connection, path=".", db_init=False):
         db_connection.execute(select_string)
         note_index = db_connection.cursor.fetchone()[0]
         note_index_list.append(note_index)
+
+        back_links = []
+        search_results = text_search(note_index)
+        for sr in search_results:
+            pattern = "\d{14}"
+            results = re.findall(pattern, sr[0])[0]
+            if results != str(note_index):
+                back_links.append(results)
+        md_file.md.metadata["backlinks"] = list(set(back_links))
+        md_file.edited = 1
+        md_file.write()
 
         tag_index_list = []
         for tag in md_file.md.metadata["tags"]:

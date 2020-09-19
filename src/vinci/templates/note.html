@@ -16,6 +16,7 @@
                     Metadata
                   </h5>
                   <div class="card-body ">
+                    <h5 class="text-muted">File Details</h5>
                     <table class="table table-hover table-sm">
                       <tr>
                         <th scope="row">Modified</th>
@@ -26,8 +27,39 @@
                         <td>{{ metadata.created }}</td>
                       </tr>
                     </table>
+                      {% if metadata.book is defined %}
+                      <h5 class="text-muted">Book Details</h5>
+                    <table class="table table-hover table-sm">
+                      <tr>
+                        <th scope="row">Book Title</th>
+                        <td>{{ metadata.book.title }}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Book Author</th>
+                        <td>{{ metadata.book.author }}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Read</th>
+                        <td>{{ metadata.book.read }}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Pages</th>
+                        <td>{{ metadata.book.pages }}</td>
+                      </tr>
+                    </table>
+                      {% endif %}
+                    {% if metadata.backlinks is defined %}
+                    <h5 class="text-muted">Backlinks</h5>
+                    <div class="list-group">
+                    {% for link in metadata.backlinks %}
+                        <a class="list-group-item list-group-item-action" href="/note/{{ link }}">{{ link }}</a>
+                    {% endfor %}
+                    </div>
+                    {% endif %}
+
                   </div>
                   <div  class="card-footer">
+                    <h5 class="text-muted">Tags</h5>
                     {% for tag in metadata.tags %}
                       <a class="badge badge-primary" href="/tag/{{ tag }}">{{ tag }}</a>
                     {% endfor %}

@@ -7,18 +7,16 @@
           <table class="table table-borderless table-hover table-sm">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">Parent Folder</th>
+                <th scope="col">Note</th>
                 <th scope="col">Title</th>
-                <th scope="col">Path</th>
                 <th scope="col">Tags</th>
               </tr>
             </thead>
             <tbody>
               {% for note in notes %}
                 <tr>
-                  <td>{{ note[3] }}</td>
+                  <td>{{ note[2] }}</td>
                   <th scope="row"><a href="/note/{{ note[2] }}">{{ note[0] }}</a></th>
-                  <td>{{ note[1] }}</td>
                   <td>
                     {% for tag in note[4] %}
                       <a class="badge badge-primary" href="/tag/{{ tag[0] }}">{{ tag[0] }}</a>
