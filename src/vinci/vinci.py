@@ -118,6 +118,7 @@ def render_note(note_id):
         tag_index_tuple_sum=tag_index_tuple_sum,
         note_content=md_file["content"],
         metadata=md_file["metadata"],
+        backlinks=md_file["backlinks"],
         version=VERSION,
     )
 

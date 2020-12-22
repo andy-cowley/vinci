@@ -240,10 +240,20 @@ def render_markdown(db_connection, note_id):
     db_connection.execute(select_string)
     note_path = Path(db_connection.cursor.fetchone()[0])
     note = MDFile(note_path)
+    backlinks = []
+    for backlink in note.md.metadata["backlinks"]:
+        select_string = f"""
+        SELECT path FROM notes WHERE id={backlink}
+        """
+        db_connection.execute(select_string)
+        note_path = Path(db_connection.cursor.fetchone()[0])
+        backlinked_note = MDFile(note_path)
+        backlinks.append((backlink, backlinked_note.md.metadata["title"]))
+
     content = pypandoc.convert_text(note.md.content, to="html5", format="md")
     content = content.replace("<table>", "<table class='table'>")
     content = content.replace("<blockquote>", "<blockquote class='blockquote'>")
-    output = {"metadata": note.md.metadata, "content": content}
+    output = {"metadata": note.md.metadata, "content": content, "backlinks": backlinks}
     return output
 
 
