@@ -24,7 +24,8 @@ class MDFile:
                 "created": datetime,
                 Optional("book"): [dict],
                 Optional("web"): [str],
-                Optional("backlinks"): [str]
+                Optional("backlinks"): [str],
+                "topic": str
             }
         )
 
@@ -44,6 +45,8 @@ class MDFile:
                         self.md.metadata["tags"] = ["untagged"]
                     elif missing == "title":
                         self.md.metadata["title"] = self.path[-1]
+                    elif missing == "topic":
+                        self.md.metadata["topic"] = "none"
                     self.edited = 1
             except SchemaError as e:
                 logging.warning(e)

@@ -69,6 +69,26 @@ def update_database(db_connection, path=".", db_init=False):
         md_file.edited = 1
         md_file.write()
 
+        topic = md_file.md.metadata["topic"]
+        select_topic_string = f"SELECT id FROM topics WHERE topics.topic = '{topic}'"
+        db_connection.execute(select_topic_string)
+        topic_index = db_connection.cursor.fetchone()
+        if not topic_index:
+            insert_string = f"INSERT INTO topics (topic) VALUES ('{topic}')"
+            db_connection.execute(insert_string)
+            db_connection.execute(select_topic_string)
+            topic_index = db_connection.cursor.fetchone()
+
+        select_join_string = f"""
+        SELECT note,topic FROM notes_topics WHERE note = '{note_index}' AND topic = '{topic_index[0]}'
+        """
+        db_connection.execute(select_join_string)
+        join = db_connection.cursor.fetchone()
+
+        if not join:
+            insert_string = f"INSERT INTO notes_topics (note,topic) VALUES ('{note_index}','{topic_index[0]}')"
+            db_connection.execute(insert_string)
+
         tag_index_list = []
         for tag in md_file.md.metadata["tags"]:
             select_tag_string = f"SELECT id FROM tags WHERE tags.tag = '{tag}'"
@@ -122,6 +142,13 @@ def fetch_all_tags(db_connection):
     return tags_tuples
 
 
+def fetch_all_topics(db_connection):
+    select_topics_string = "SELECT * from topics"
+    db_connection.execute(select_topics_string)
+    topics_tuples = db_connection.cursor.fetchall()
+    return topics_tuples
+
+
 def fetch_all_notes(db_connection):
     select_notes_string = "SELECT * from notes"
     db_connection.execute(select_notes_string)
@@ -137,6 +164,15 @@ def fetch_all_notes(db_connection):
         db_connection.execute(join_string)
         tag_list = list(db_connection.cursor.fetchall())
         note_tuple = note + (tag_list,)
+        join_topic_string = f"""
+        SELECT topics.topic
+        FROM notes_topics
+        JOIN topics ON topics.id = notes_topics.topic
+        WHERE notes_topics.note = {note[2]}
+        """
+        db_connection.execute(join_topic_string)
+        topic = db_connection.cursor.fetchone()
+        note_tuple = note_tuple + topic
         notes_tuples.append(note_tuple)
 
     return notes_tuples

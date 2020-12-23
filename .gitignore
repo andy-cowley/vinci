@@ -1,5 +1,6 @@
 *.db
 Notes
+zk
 __pycache__
 *.pyc
 *.db-journal
