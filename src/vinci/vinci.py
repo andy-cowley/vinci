@@ -9,7 +9,7 @@ from vinci.functions import (
     create_note_index,
     render_markdown,
     fetch_search_results,
-    fetch_total_notes)
+    fetch_total_notes, fetch_all_topics)
 from flask import Flask, render_template, request, send_from_directory
 
 if os.getenv("VINCI_DEBUG"):
@@ -87,12 +87,12 @@ def favicon():
 def index():
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
-    note_index = create_note_index(db)
+    topics = fetch_all_topics(db)
     return render_template(
-        "index.html",
+        "topics.html",
         tag_index_tuple=tag_index,
         tag_index_tuple_sum=tag_index_tuple_sum,
-        notes=note_index,
+        topics=topics,
         version=VERSION,
     )
 
@@ -107,6 +107,21 @@ def build_note_list(tag_query):
         tag_index_tuple=tag_index,
         tag_index_tuple_sum=tag_index_tuple_sum,
         notes=note_index,
+        version=VERSION,
+    )
+
+
+@app.route("/topic/<string:topic_query>", methods=["GET"])
+def build_list_of_notes_from_topic(topic_query):
+    tag_index = create_tag_index(db)
+    tag_index_tuple_sum = fetch_total_notes(db)
+    note_index = create_note_index(db, topic=topic_query)
+    return render_template(
+        "index.html",
+        tag_index_tuple=tag_index,
+        tag_index_tuple_sum=tag_index_tuple_sum,
+        notes=note_index,
+        topic=topic_query,
         version=VERSION,
     )
 

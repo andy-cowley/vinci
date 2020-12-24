@@ -206,8 +206,11 @@ def fetch_one_note(db_connection, note_path=None, note_id=None):
     return note_tuple
 
 
-def fetch_tagged_notes(db_connection, tag_id):
-    select_string = f"SELECT note FROM notes_tags WHERE tag = '{tag_id}'"
+def fetch_tagged_notes(db_connection, tag_id=None, topic_id=None):
+    if topic_id:
+        select_string = f"SELECT note FROM notes_topics WHERE topic = '{topic_id}'"
+    else:
+        select_string = f"SELECT note FROM notes_tags WHERE tag = '{tag_id}'"
     db_connection.execute(select_string)
     note_id_list = db_connection.cursor.fetchall()
     note_id_list = [note[0] for note in note_id_list]
@@ -255,16 +258,26 @@ def create_tag_index(db_connection):
     return sorted(tag_index_tuple_list, key=lambda tag: tag[0])
 
 
-def create_note_index(db_connection, tag=None):
-    if not tag:
+def create_note_index(db_connection, tag=None, topic=None):
+    if not (tag or topic):
         notes = fetch_all_notes(db_connection)
-    else:
+    elif tag:
         select_string = f"SELECT id FROM tags WHERE tag = '{tag}'"
         db_connection.execute(select_string)
         tag_id = db_connection.cursor.fetchone()
         tag_id = tag_id[0]
         notes = fetch_tagged_notes(db_connection, tag_id)
         notes = sorted(notes, key=lambda note: note[4])
+    elif topic:
+        select_string = f"SELECT id FROM topics WHERE topic = '{topic}'"
+        db_connection.execute(select_string)
+        topic_id = db_connection.cursor.fetchone()
+        if not topic_id:
+            notes = None
+        else:
+            topic_id = topic_id[0]
+            notes = fetch_tagged_notes(db_connection, topic_id=topic_id)
+            notes = sorted(notes, key=lambda note: note[4])
 
     return notes
 

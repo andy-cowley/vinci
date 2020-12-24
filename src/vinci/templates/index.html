@@ -4,6 +4,12 @@
 
         <div class="col-10 col-md-10">
           <h4 class="text-info">Notes</h4>
+          {% if not notes %}
+          <p>No results</p>
+          {% else %}
+            {% if topic %}
+              <h5>Topic: <a class="badge badge-info">{{ topic }}</a></h5>
+            {% endif %}
           <table class="table table-borderless table-hover table-sm">
             <thead class="thead-dark">
               <tr>
@@ -24,6 +30,7 @@
                   </td>
                 </tr>
               {% endfor %}
+            {% endif %}
             </tbody>
           </table>
         </div>
