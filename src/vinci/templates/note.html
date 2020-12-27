@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-8 col-md-8">
-                <h5>Topic: <a class="badge badge-info">{{ metadata.topic }}</a></h5>
+              <h5>Topic: <a class="badge badge-info" href="/topic/{{ metadata.topic }}">{{ metadata.topic }}</a></h5>
                 {{ note_content | safe }}
             </div>
             <div class="col-4 col-md-4">
@@ -20,6 +20,10 @@
 
                         <h5 class="text-muted">File Details</h5>
                         <table class="table table-hover table-sm">
+                          <tr>
+                                <th scope="row">Filename</th>
+                                <td>{{ file_name }}</td>
+                            </tr>
                             <tr>
                                 <th scope="row">Modified</th>
                                 <td>{{ metadata.modified }}</td>
