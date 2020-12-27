@@ -458,8 +458,12 @@ mark,
 }
 
 .blockquote {
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
+  font: 14px/22px Libre Baskerville;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 50px;
+  padding-left: 15px;
+  border-left: 3px solid #ccc;
 }
 
 .blockquote-footer {
