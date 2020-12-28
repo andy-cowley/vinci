@@ -328,3 +328,11 @@ def fetch_search_results(db_connection, regex, path="./*"):
         note = note_tuple + (sr[1],) + (result_as_html,)
         notes.append(note)
     return notes
+
+
+def fetch_unlinked_notes(path='.'):
+    regex = "backlinks: \[\]"
+    rg = Ripgrepy(regex, path)
+    files = rg.with_filename().run().as_string.split("\n")
+    result = [item.split(":")[0][2:-3] for item in files]
+    return result

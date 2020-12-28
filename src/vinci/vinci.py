@@ -9,7 +9,9 @@ from vinci.functions import (
     create_note_index,
     render_markdown,
     fetch_search_results,
-    fetch_total_notes, fetch_all_topics)
+    fetch_total_notes,
+    fetch_all_topics,
+    fetch_unlinked_notes)
 from flask import Flask, render_template, request, send_from_directory
 
 if os.getenv("VINCI_DEBUG"):
@@ -88,11 +90,31 @@ def index():
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
     topics = fetch_all_topics(db)
+    unlinked_notes = fetch_unlinked_notes()
+    num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "topics.html",
         tag_index_tuple=tag_index,
         tag_index_tuple_sum=tag_index_tuple_sum,
         topics=topics,
+        unlinked_notes=unlinked_notes,
+        num_unlinked_notes=num_unlinked_notes,
+        version=VERSION,
+    )
+
+
+@app.route("/unlinked", methods=["GET"])
+def unlinked():
+    tag_index = create_tag_index(db)
+    tag_index_tuple_sum = fetch_total_notes(db)
+    unlinked_notes = fetch_unlinked_notes()
+    num_unlinked_notes = len(unlinked_notes)
+    return render_template(
+        "unlinked.html",
+        tag_index_tuple=tag_index,
+        tag_index_tuple_sum=tag_index_tuple_sum,
+        unlinked_notes=unlinked_notes,
+        num_unlinked_notes=num_unlinked_notes,
         version=VERSION,
     )
 
@@ -102,10 +124,14 @@ def all_tags():
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
     note_index = create_note_index(db)
+    unlinked_notes = fetch_unlinked_notes()
+    num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "index.html",
         tag_index_tuple=tag_index,
         tag_index_tuple_sum=tag_index_tuple_sum,
+        unlinked_notes=unlinked_notes,
+        num_unlinked_notes=num_unlinked_notes,
         notes=note_index,
         version=VERSION,
     )
@@ -116,10 +142,14 @@ def build_note_list(tag_query):
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
     note_index = create_note_index(db, tag_query)
+    unlinked_notes = fetch_unlinked_notes()
+    num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "index.html",
         tag_index_tuple=tag_index,
         tag_index_tuple_sum=tag_index_tuple_sum,
+        unlinked_notes=unlinked_notes,
+        num_unlinked_notes=num_unlinked_notes,
         notes=note_index,
         version=VERSION,
     )
@@ -130,10 +160,14 @@ def build_list_of_notes_from_topic(topic_query):
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
     note_index = create_note_index(db, topic=topic_query)
+    unlinked_notes = fetch_unlinked_notes()
+    num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "index.html",
         tag_index_tuple=tag_index,
         tag_index_tuple_sum=tag_index_tuple_sum,
+        unlinked_notes=unlinked_notes,
+        num_unlinked_notes=num_unlinked_notes,
         notes=note_index,
         topic=topic_query,
         version=VERSION,
@@ -154,10 +188,14 @@ def render_note(note_id):
     md_file = render_markdown(db, note_id)
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
+    unlinked_notes = fetch_unlinked_notes()
+    num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "note.html",
         tag_index_tuple=tag_index,
         tag_index_tuple_sum=tag_index_tuple_sum,
+        unlinked_notes=unlinked_notes,
+        num_unlinked_notes=num_unlinked_notes,
         note_content=md_file["content"],
         metadata=md_file["metadata"],
         file_name=note_id,
@@ -170,6 +208,8 @@ def render_note(note_id):
 def search():
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
+    unlinked_notes = fetch_unlinked_notes()
+    num_unlinked_notes = len(unlinked_notes)
     if request.method == "POST":
         regex = request.form["search"]
         notes = fetch_search_results(db, regex)
@@ -177,13 +217,17 @@ def search():
             "results.html",
             tag_index_tuple=tag_index,
             tag_index_tuple_sum=tag_index_tuple_sum,
+            unlinked_notes=unlinked_notes,
+            num_unlinked_notes=num_unlinked_notes,
             search_term=regex,
             notes=notes,
         )
     else:
         note_index = create_note_index(db)
         return render_template(
-            "index.html", tag_index_tuple=tag_index, tag_index_tuple_sum=tag_index_tuple_sum, notes=note_index
+            "index.html", tag_index_tuple=tag_index, tag_index_tuple_sum=tag_index_tuple_sum, notes=note_index,
+            unlinked_notes=unlinked_notes,
+            num_unlinked_notes=num_unlinked_notes,
         )
 
 
@@ -192,9 +236,13 @@ def tasks():
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
     notes = fetch_search_results(db, "\- \[.\]")
+    unlinked_notes = fetch_unlinked_notes()
+    num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "tasks.html",
         tag_index_tuple=tag_index,
         tag_index_tuple_sum=tag_index_tuple_sum,
+        unlinked_notes=unlinked_notes,
+        num_unlinked_notes=num_unlinked_notes,
         notes=notes,
     )
