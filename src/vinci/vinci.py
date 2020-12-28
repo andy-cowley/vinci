@@ -65,8 +65,8 @@ db.commit()
 
 write_default_metadata()
 
-#schema_file = open("schema/vinci_schema.sql", "r")
-#f = schema_file.read()
+# schema_file = open("schema/vinci_schema.sql", "r")
+# f = schema_file.read()
 
 db.executescript(DB_SCHEMA)
 
@@ -93,6 +93,20 @@ def index():
         tag_index_tuple=tag_index,
         tag_index_tuple_sum=tag_index_tuple_sum,
         topics=topics,
+        version=VERSION,
+    )
+
+
+@app.route("/all-tags", methods=["GET"])
+def all_tags():
+    tag_index = create_tag_index(db)
+    tag_index_tuple_sum = fetch_total_notes(db)
+    note_index = create_note_index(db)
+    return render_template(
+        "index.html",
+        tag_index_tuple=tag_index,
+        tag_index_tuple_sum=tag_index_tuple_sum,
+        notes=note_index,
         version=VERSION,
     )
 
