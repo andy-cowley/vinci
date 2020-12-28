@@ -334,5 +334,6 @@ def fetch_unlinked_notes(path='.'):
     regex = "backlinks: \[\]"
     rg = Ripgrepy(regex, path)
     files = rg.with_filename().run().as_string.split("\n")
-    result = [item.split(":")[0][2:-3] for item in files]
+    pattern = "\d{14}"
+    result = [re.findall(pattern, item)[0] for item in files]
     return result
