@@ -146,7 +146,7 @@ def fetch_all_topics(db_connection):
     select_topics_string = "SELECT * from topics"
     db_connection.execute(select_topics_string)
     topics_tuples = db_connection.cursor.fetchall()
-    return topics_tuples
+    return sorted(topics_tuples, key=lambda topic: topic[1])
 
 
 def fetch_all_notes(db_connection):

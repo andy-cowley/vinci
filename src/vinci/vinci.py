@@ -86,6 +86,24 @@ def favicon():
 
 
 @app.route("/", methods=["GET"])
+def all_tags():
+    tag_index = create_tag_index(db)
+    tag_index_tuple_sum = fetch_total_notes(db)
+    note_index = create_note_index(db)
+    unlinked_notes = fetch_unlinked_notes()
+    num_unlinked_notes = len(unlinked_notes)
+    return render_template(
+        "index.html",
+        tag_index_tuple=tag_index,
+        tag_index_tuple_sum=tag_index_tuple_sum,
+        unlinked_notes=unlinked_notes,
+        num_unlinked_notes=num_unlinked_notes,
+        notes=note_index,
+        version=VERSION,
+    )
+
+
+@app.route("/topics", methods=["GET"])
 def index():
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
@@ -115,24 +133,6 @@ def unlinked():
         tag_index_tuple_sum=tag_index_tuple_sum,
         unlinked_notes=unlinked_notes,
         num_unlinked_notes=num_unlinked_notes,
-        version=VERSION,
-    )
-
-
-@app.route("/all-tags", methods=["GET"])
-def all_tags():
-    tag_index = create_tag_index(db)
-    tag_index_tuple_sum = fetch_total_notes(db)
-    note_index = create_note_index(db)
-    unlinked_notes = fetch_unlinked_notes()
-    num_unlinked_notes = len(unlinked_notes)
-    return render_template(
-        "index.html",
-        tag_index_tuple=tag_index,
-        tag_index_tuple_sum=tag_index_tuple_sum,
-        unlinked_notes=unlinked_notes,
-        num_unlinked_notes=num_unlinked_notes,
-        notes=note_index,
         version=VERSION,
     )
 
