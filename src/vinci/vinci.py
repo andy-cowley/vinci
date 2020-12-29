@@ -160,6 +160,12 @@ def build_list_of_notes_from_topic(topic_query):
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
     note_index = create_note_index(db, topic=topic_query)
+    index_note_content = "No index note, yet..."
+    for note in note_index:
+        for tag in note[4]:
+            if "index" in tag:
+                md_file = render_markdown(db, note[2])
+                index_note_content = md_file["content"]
     unlinked_notes = fetch_unlinked_notes(db)
     num_unlinked_notes = len(unlinked_notes)
     return render_template(
@@ -168,6 +174,7 @@ def build_list_of_notes_from_topic(topic_query):
         tag_index_tuple_sum=tag_index_tuple_sum,
         unlinked_notes=unlinked_notes,
         num_unlinked_notes=num_unlinked_notes,
+        note_content = index_note_content,
         notes=note_index,
         topic=topic_query,
         version=VERSION,

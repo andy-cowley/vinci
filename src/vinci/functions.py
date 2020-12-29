@@ -278,7 +278,6 @@ def create_note_index(db_connection, tag=None, topic=None):
             topic_id = topic_id[0]
             notes = fetch_tagged_notes(db_connection, topic_id=topic_id)
             notes = sorted(notes, key=lambda note: note[4])
-
     return notes
 
 
@@ -300,6 +299,9 @@ def render_markdown(db_connection, note_id):
         backlinks.append((backlink, backlinked_note.md.metadata["title"]))
 
     content = pypandoc.convert_text(note.md.content, to="html5", format="md")
+    note_links = re.findall("\d{14}", content)
+    for link in note_links:
+        content = content.replace(link, f"/note/{link}") # fix links on paths other thean /note
     content = content.replace("<table>", "<table class='table'>")
     content = content.replace("<blockquote>", "<blockquote class='blockquote'>")
     output = {"metadata": note.md.metadata, "content": content, "backlinks": backlinks}

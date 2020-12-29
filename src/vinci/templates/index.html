@@ -3,12 +3,19 @@
 {% block content %}
 
         <div class="col-10 col-md-10">
+          {% if not topic %}
           <h4 class="text-info">Notes</h4>
+          {% endif %}
           {% if not notes %}
           <p>No results</p>
           {% else %}
             {% if topic %}
-              <h5>Topic: <a class="badge badge-info">{{ topic }}</a></h5>
+              <h4 class="text-info">
+                {{ topic }}
+              </h4>
+            <div class="col-8 col-md-8">
+                {{ note_content | safe }}
+            </div>
             {% endif %}
           <table class="table table-borderless table-hover table-sm">
             <thead class="thead-dark">
