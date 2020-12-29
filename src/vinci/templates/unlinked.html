@@ -7,11 +7,28 @@
             {% if not unlinked_notes %}
             <p>No unlinked notes!</p>
             {% else %}
-            <ul>
+          <table class="table table-borderless table-hover table-sm">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Note</th>
+                <th scope="col">Title</th>
+                <th scope="col">Tags</th>
+              </tr>
+            </thead>
+            <tbody>
                 {% for note in unlinked_notes %}
-                <li><a href="/note/{{ note }}">{{ note }}</a></li>
+                <tr>
+                  <td>{{ note[2] }}</td>
+                  <th scope="row"><a href="/note/{{ note[2] }}">{{ note[0] }}</a></th>
+                  <td>
+                    {% for tag in note[4] %}
+                      <a class="badge badge-primary" href="/tag/{{ tag[0] }}">{{ tag[0] }}</a>
+                    {% endfor %}
+                  </td>
+                </tr>
                 {% endfor %}
-            </ul>
+            </tbody>
+          </table>
             {% endif %}
         </div>
 

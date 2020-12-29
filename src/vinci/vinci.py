@@ -90,7 +90,7 @@ def all_tags():
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
     note_index = create_note_index(db)
-    unlinked_notes = fetch_unlinked_notes()
+    unlinked_notes = fetch_unlinked_notes(db)
     num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "index.html",
@@ -108,7 +108,7 @@ def index():
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
     topics = fetch_all_topics(db)
-    unlinked_notes = fetch_unlinked_notes()
+    unlinked_notes = fetch_unlinked_notes(db)
     num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "topics.html",
@@ -125,7 +125,7 @@ def index():
 def unlinked():
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
-    unlinked_notes = fetch_unlinked_notes()
+    unlinked_notes = fetch_unlinked_notes(db)
     num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "unlinked.html",
@@ -142,7 +142,7 @@ def build_note_list(tag_query):
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
     note_index = create_note_index(db, tag_query)
-    unlinked_notes = fetch_unlinked_notes()
+    unlinked_notes = fetch_unlinked_notes(db)
     num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "index.html",
@@ -160,7 +160,7 @@ def build_list_of_notes_from_topic(topic_query):
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
     note_index = create_note_index(db, topic=topic_query)
-    unlinked_notes = fetch_unlinked_notes()
+    unlinked_notes = fetch_unlinked_notes(db)
     num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "index.html",
@@ -188,7 +188,7 @@ def render_note(note_id):
     md_file = render_markdown(db, note_id)
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
-    unlinked_notes = fetch_unlinked_notes()
+    unlinked_notes = fetch_unlinked_notes(db)
     num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "note.html",
@@ -208,7 +208,7 @@ def render_note(note_id):
 def search():
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
-    unlinked_notes = fetch_unlinked_notes()
+    unlinked_notes = fetch_unlinked_notes(db)
     num_unlinked_notes = len(unlinked_notes)
     if request.method == "POST":
         regex = request.form["search"]
@@ -236,7 +236,7 @@ def tasks():
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
     notes = fetch_search_results(db, "\- \[.\]")
-    unlinked_notes = fetch_unlinked_notes()
+    unlinked_notes = fetch_unlinked_notes(db)
     num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "tasks.html",
