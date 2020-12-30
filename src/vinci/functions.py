@@ -337,6 +337,9 @@ def fetch_unlinked_notes(db_connection, path='.'):
     rg = Ripgrepy(regex, path)
     files = rg.with_filename().run().as_string.split("\n")
     pattern = "\d{14}"
-    result = [re.findall(pattern, item)[0] for item in files]
-    notes = [fetch_one_note(db_connection,note_id=note) for note in result]
+    try:
+        result = [re.findall(pattern, item)[0] for item in files]
+        notes = [fetch_one_note(db_connection,note_id=note) for note in result]
+    except IndexError as e:
+        notes=[]
     return notes
