@@ -11,7 +11,8 @@ from vinci.functions import (
     fetch_search_results,
     fetch_total_notes,
     fetch_all_topics,
-    fetch_unlinked_notes)
+    fetch_unlinked_notes,
+)
 from flask import Flask, render_template, request, send_from_directory
 
 if os.getenv("VINCI_DEBUG"):
@@ -79,10 +80,11 @@ db.commit()
 app = Flask(__name__)
 
 
-@app.route('/favicon.ico')
+@app.route("/favicon.ico")
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    return send_from_directory(
+        os.path.join(app.root_path, "static"), "favicon.ico", mimetype="image/vnd.microsoft.icon"
+    )
 
 
 @app.route("/", methods=["GET"])
@@ -161,12 +163,14 @@ def build_list_of_notes_from_topic(topic_query):
     tag_index_tuple_sum = fetch_total_notes(db)
     note_index = create_note_index(db, topic=topic_query)
     index_note_content = "No index note, yet..."
+    metadata = {}
     for note in note_index:
         for tag in note[4]:
             if "index" in tag:
                 md_file = render_markdown(db, note[2])
                 index_note_content = md_file["content"]
-    unlinked_notes = fetch_unlinked_notes(db)
+                metadata = (md_file["metadata"],)
+        unlinked_notes = fetch_unlinked_notes(db)
     num_unlinked_notes = len(unlinked_notes)
     return render_template(
         "index.html",
@@ -174,7 +178,8 @@ def build_list_of_notes_from_topic(topic_query):
         tag_index_tuple_sum=tag_index_tuple_sum,
         unlinked_notes=unlinked_notes,
         num_unlinked_notes=num_unlinked_notes,
-        note_content = index_note_content,
+        note_content=index_note_content,
+        metadata=metadata,
         notes=note_index,
         topic=topic_query,
         version=VERSION,
@@ -190,8 +195,8 @@ def update_and_show_index():
 
 @app.route("/note/<string:note_id>", methods=["GET"])
 def render_note(note_id):
-    if note_id[-3:] == '.md':
-        note_id = note_id.split('.')[0]
+    if note_id[-3:] == ".md":
+        note_id = note_id.split(".")[0]
     md_file = render_markdown(db, note_id)
     tag_index = create_tag_index(db)
     tag_index_tuple_sum = fetch_total_notes(db)
@@ -232,7 +237,10 @@ def search():
     else:
         note_index = create_note_index(db)
         return render_template(
-            "index.html", tag_index_tuple=tag_index, tag_index_tuple_sum=tag_index_tuple_sum, notes=note_index,
+            "index.html",
+            tag_index_tuple=tag_index,
+            tag_index_tuple_sum=tag_index_tuple_sum,
+            notes=note_index,
             unlinked_notes=unlinked_notes,
             num_unlinked_notes=num_unlinked_notes,
         )

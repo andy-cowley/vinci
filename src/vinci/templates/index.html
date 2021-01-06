@@ -13,8 +13,40 @@
               <h4 class="text-info">
                 {{ topic }}
               </h4>
+              <div class="row">
             <div class="col-8 col-md-8">
                 {{ note_content | safe }}
+            </div>
+            <div class="col-4 col-md-4">
+                <div class="card border-secondary">
+                    <h5 class="card-header">
+                        Metadata
+                    </h5>
+                    <div class="card-body ">
+
+                        <h5 class="text-muted">File Details</h5>
+                        <table class="table table-hover table-sm">
+                          <tr>
+                                <th scope="row">Filename</th>
+                                <td>{{ file_name }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Modified</th>
+                                <td>{{ metadata.modified }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Created</th>
+                                <td>{{ metadata.created }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <h5 class="text-muted">Tags</h5>
+                        {% for tag in metadata.tags %}
+                        <a class="badge badge-primary" href="/tag/{{ tag }}">{{ tag }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
             {% endif %}
           <table class="table table-borderless table-hover table-sm">
