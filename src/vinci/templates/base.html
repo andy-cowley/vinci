@@ -26,27 +26,24 @@
 
     </header>
     <div class="container-fluid">
-        <div class="row">
-          <div class="col-2 col-md-2 bd-sidebar">
-            <h4 class="text-info">Tags</h4>
-            <ul class="list-group">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="/">All notes</a>
-                <span class="badge badge-primary badge-pill">
-                  <a href="/">{{ tag_index_tuple_sum }}</a>
-                </span>
-              </li>
-              {% for tag in tag_index_tuple %}
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div class="row">
+        <div class="col-2 col-md-2 bd-sidebar">
+          <h4 class="text-info">Tags</h4>
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center h-50">
+              <a href="/">All notes</a>
+              <a href="/" class="badge badge-info badge-pill">{{ tag_index_tuple_sum }}</a>
+            </li>
+            {% for tag in tag_index_tuple %}
+
+              <li class="list-group-item d-flex justify-content-between align-items-center h-50">
                 <a href="/tag/{{ tag[0] }}">{{ tag[0] }}</a>
-                <span class="badge badge-primary badge-pill">
-                  <a href="/tag/{{ tag[0] }}">{{ tag[1] }}</a>
-                </span>
+                <a class="badge badge-info badge-pill" href="/tag/{{ tag[0] }}">{{ tag[1] }}</a>
               </li>
-              {% endfor %}
-            </ul>
-            <span class="badge badge-info">{{ version }}</span>
-          </div>
+            {% endfor %}
+          </ul>
+          <span class="badge badge-info">{{ version }}</span>
+        </div>
         {% block content %}{% endblock %}
       </div>
 
