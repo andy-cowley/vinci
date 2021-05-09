@@ -1,4 +1,5 @@
 import logging
+import os
 import pypandoc
 from vinci.classes import MDFile
 from pathlib import Path, PurePath
@@ -139,7 +140,7 @@ def fetch_one_note(db_connection, note_path=None, note_id=None):
     elif note_id:
         select_note_string = f"SELECT * FROM notes WHERE notes.id = '{note_id}'"
     else:
-        raise ValueError(f"""Exactly one of note_path or note_id must be passed to this function.""")
+        raise ValueError("""Exactly one of note_path or note_id must be passed to this function.""")
     db_connection.execute(select_note_string)
     note = db_connection.cursor.fetchone()
     join_string = f"""
@@ -224,8 +225,10 @@ def render_markdown(db_connection, note_id):
     """
     db_connection.execute(select_string)
     note_path = Path(db_connection.cursor.fetchone()[0])
+    directory_path = os.path.dirname(note_path)
     note = MDFile(note_path)
     content = pypandoc.convert_text(note.md.content, to="html5", format="md")
+    content = content.replace("<img src=\"", f"<img src=\"/{directory_path}/")
     content = content.replace("<table>", "<table class='table'>")
     content = content.replace("<blockquote>", "<blockquote class='blockquote'>")
     output = {"metadata": note.md.metadata, "content": content}

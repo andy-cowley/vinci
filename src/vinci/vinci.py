@@ -10,7 +10,7 @@ from vinci.functions import (
     render_markdown,
     fetch_search_results,
     fetch_total_notes)
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, abort
 
 if os.getenv("VINCI_DEBUG"):
     logging.basicConfig(level="INFO")
@@ -36,6 +36,16 @@ update_database(db, db_init=True)
 db.commit()
 
 app = Flask(__name__)
+
+
+@app.route("/notes/<path:path>")
+def image(path):
+    logging.info(path)
+    try:
+        return send_from_directory("/app/notes", filename=path)
+    except FileNotFoundError as e:
+        logging.warning(e)
+        abort(404)
 
 
 @app.route('/favicon.ico')
