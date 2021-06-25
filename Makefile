@@ -6,7 +6,7 @@ DEV_VERSION = dev-$(shell git rev-parse HEAD)
 IMAGEFULLNAME=${REPO}/${IMAGENAME}:${VERSION}
 BUILD_DATE=$(shell date +"%Y%m%d%H%M")
 
-DEV_NOTES_DIR=/home/ac/src/ac/vinci/zk
+DEV_NOTES_DIR=/home/ac/Documents/zk-dev
 
 .PHONY: help build build_local push all
 

@@ -8,8 +8,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-8 col-md-8">
-              <h5>Topic: <a class="badge badge-info" href="/topic/{{ metadata.topic }}">{{ metadata.topic }}</a></h5>
+              <div class="card">
+                <h5 class ="card-header">Topic: <a class="badge badge-info" href="/topic/{{ metadata.topic }}">{{ metadata.topic }}</a></h5>
+                <div class="card-body">
                 {{ note_content | safe }}
+                </div>
+              </div>
             </div>
             <div class="col-4 col-md-4">
                 <div class="card border-secondary">
@@ -41,7 +45,7 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="alert alert-secondary">
+                <div class="alert ">
                     <h4 class="text-muted">References</h4>
                     {% if metadata.book is defined %}
                     <h5 class="text-muted">Books</h5>
