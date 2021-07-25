@@ -2,93 +2,92 @@
 
 {% block content %}
 
-<div class="col-10 col-md-10">
+  <div class="col-10 col-md-10">
     <h2 class="text-info">{{ metadata.title }}</h2>
     <hr/>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-8 col-md-8">
-              <div class="card">
-                <h5 class ="card-header">Topic: <a class="badge badge-info" href="/topic/{{ metadata.topic }}">{{ metadata.topic }}</a></h5>
-                <div class="card-body">
-                {{ note_content | safe }}
-                </div>
-              </div>
+      <div class="row">
+        <div class="col-8 col-md-8">
+          <div class="card">
+            <h5 class ="card-header">Topic: <a class="badge badge-info" href="/topic/{{ metadata.topic }}">{{ metadata.topic }}</a></h5>
+            <div class="card-body">
+              {{ note_content | safe }}
             </div>
-            <div class="col-4 col-md-4">
-                <div class="card border-secondary">
-                    <h5 class="card-header">
-                        Metadata
-                    </h5>
-                    <div class="card-body ">
-
-                        <h5 class="text-muted">File Details</h5>
-                        <table class="table table-hover table-sm">
-                          <tr>
-                                <th scope="row">Filename</th>
-                                <td>{{ file_name }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Modified</th>
-                                <td>{{ metadata.modified }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Created</th>
-                                <td>{{ metadata.created }}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="card-footer">
-                        <h5 class="text-muted">Tags</h5>
-                        {% for tag in metadata.tags %}
-                        <a class="badge badge-primary" href="/tag/{{ tag }}">{{ tag }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="alert ">
-                    <h4 class="text-muted">References</h4>
-                    {% if metadata.book is defined %}
-                    <h5 class="text-muted">Books</h5>
-                    {% for book in metadata.book %}
-                    <div class="card">
-                        <h6 class="card-header">{{ book.title }}</h6>
-                        <div class="card-body">
-                            <dl class="row">
-                                <dt class="col-sm-5">Page(s)</dt>
-                                <dd class="col-sm-7">{{ book.pages }}</dd>
-                                <dt class="col-sm-5">Read</dt>
-                                <dd class="col-sm-7">{{ book.read }}</dd>
-                            </dl>
-                        </div>
-                        <div class="card-footer">
-                            <h6>{{ book.author }}</h6>
-                        </div>
-                    </div>
-                    {% endfor %}
-                    {% endif %}
-                    {% if metadata.web is defined %}
-                    <h5 class="text-muted">Web Links</h5>
-                    <ul class="list-group">
-                        {% for link in metadata.web %}
-                        <li class="list-group-item">
-                            <a href="{{ link }}" target="_blank">{{ link }}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                    {% if metadata.backlinks is defined %}
-                    <h5 class="text-muted">Backlinks</h5>
-                    <ul class="list-group">
-                        {% for link in backlinks %}
-                        <li class="list-group-item">
-                            <a class="link" href="/note/{{ link[0] }}">{{ link[1] }}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-            </div>
+          </div>
         </div>
+        <div class="col-4 col-md-4">
+          <div class="card border-secondary">
+            <h5 class="card-header">
+              Metadata
+            </h5>
+            <div class="card-body ">
+
+              <h5 class="text-muted">File Details</h5>
+              <table class="table table-hover table-sm">
+                <tr>
+                  <th scope="row">Filename</th>
+                  <td>{{ file_name }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Modified</th>
+                  <td>{{ metadata.modified }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Created</th>
+                  <td>{{ metadata.created }}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="card-footer">
+              <h5 class="text-muted">Tags</h5>
+              {% for tag in metadata.tags %}
+                <a class="badge badge-primary" href="/tag/{{ tag }}">{{ tag }}</a>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="alert ">
+            <h4 class="text-muted">References</h4>
+            {% if metadata.book is defined %}
+              <h5 class="text-muted">Books</h5>
+              {% for book in metadata.book %}
+                <ul class="list-group">
+                  <li class="list-group-item">
+                  <h6>{{ book.title }}
+                    <span class="text-muted"> - {{ book.author }}</span>
+                  </h6>
+                  <dl class="row">
+                    <dt class="col-sm-5">Page(s)</dt>
+                    <dd class="col-sm-7">{{ book.pages }}</dd>
+                    <dt class="col-sm-5">Read</dt>
+                    <dd class="col-sm-7">{{ book.read }}</dd>
+                  </dl>
+                  </li>
+                </ul>
+              {% endfor %}
+            {% endif %}
+            {% if metadata.web is defined %}
+              <h5 class="text-muted">Web Links</h5>
+              <ul class="list-group">
+                {% for link in metadata.web %}
+                  <li class="list-group-item">
+                    <a href="{{ link }}" target="_blank">{{ link }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+            {% if metadata.backlinks is defined %}
+              <h5 class="text-muted">Backlinks</h5>
+              <ul class="list-group">
+                {% for link in backlinks %}
+                  <li class="list-group-item">
+                    <a class="link" href="/note/{{ link[0] }}">{{ link[1] }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+          </div>
+        {% endif %}
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}
