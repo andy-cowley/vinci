@@ -1,10 +1,10 @@
-FROM python:3.7.5-alpine AS base
+FROM python:3.8-alpine AS base
 
 FROM base AS build
 
 WORKDIR /build
 COPY src/requirements.txt .
-RUN pip install --no-cache-dir --install-option="--prefix=/build" -r ./requirements.txt
+RUN pip install --no-cache-dir --prefix=/build -r ./requirements.txt
 
 FROM base
 
@@ -27,7 +27,7 @@ RUN apk update && apk add tar\
 # install Ripgrep
 
 RUN curl -Lsf https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep-11.0.2-x86_64-unknown-linux-musl.tar.gz \
-    | tar xvz --strip-components=1 ripgrep-11.0.2-x86_64-unknown-linux-musl/rg && mv rg /usr/local/bin 
+    | tar xvz --strip-components=1 ripgrep-11.0.2-x86_64-unknown-linux-musl/rg && mv rg /usr/local/bin
 
 # install pandoc
 RUN curl -Lsf https://github.com/jgm/pandoc/releases/download/2.9.1.1/pandoc-2.9.1.1-linux-amd64.tar.gz \
