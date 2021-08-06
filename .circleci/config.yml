@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Unit Tests
           command: |
-            . venv/bin/activate
+            pipenv shell
             mkdir test-results
             pytest --junitxml=test-results/junit.xml
       - store_test_results:
