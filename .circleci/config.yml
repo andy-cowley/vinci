@@ -8,8 +8,8 @@ jobs:
     docker:
       # specify the version you desire here
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
-      - image: circleci/python:latest
-      
+      - image: circleci/python:3.8
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -41,9 +41,11 @@ jobs:
       - run:
           name: Unit Tests
           command: |
-            cd src
-            pipenv run python -m unittest tests/test_MDFile.py
-            pipenv run python -m unittest tests/test_web_server.py
+            . venv/bin/activate
+            mkdir test-results
+            pytest --junitxml=test-results/junit.xml
+      - store_test_results:
+          path: test-results
 
       - setup_remote_docker:
           docker_layer_caching: false
@@ -63,7 +65,7 @@ jobs:
       # specify the version you desire here
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
       - image: circleci/python:latest
-      
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
