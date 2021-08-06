@@ -42,7 +42,7 @@ jobs:
           name: Unit Tests
           command: |
             mkdir test-results
-            pipenv pytest --junitxml=test-results/junit.xml
+            pipenv run pytest --junitxml=test-results/junit.xml
       - store_test_results:
           path: test-results
 
