@@ -68,9 +68,6 @@ db.commit()
 
 write_default_metadata()
 
-# schema_file = open("schema/vinci_schema.sql", "r")
-# f = schema_file.read()
-
 db.executescript(DB_SCHEMA)
 
 update_database(db, db_init=True)
